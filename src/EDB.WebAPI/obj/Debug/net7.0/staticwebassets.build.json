@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "O9py3V0nXsekBPv1l0GWAUPSwQ+Dp45G9kcwqk1sX8A=",
+  "Source": "EDB.WebAPI",
+  "BasePath": "_content/EDB.WebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "EDB.WebAPI\\wwwroot",
+      "Source": "EDB.WebAPI",
+      "ContentRoot": "C:\\Users\\azatc\\source\\repos\\EDB\\src\\EDB.WebAPI\\wwwroot\\",
+      "BasePath": "_content/EDB.WebAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}

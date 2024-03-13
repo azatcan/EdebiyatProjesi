@@ -1,0 +1,14 @@
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\EDB.Domain.csproj.AssemblyReference.cache
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\EDB.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\EDB.Domain.AssemblyInfoInputs.cache
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\EDB.Domain.AssemblyInfo.cs
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\EDB.Domain.csproj.CoreCompileInputs.cache
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\bin\Debug\net7.0\EDB.Domain.deps.json
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\bin\Debug\net7.0\EDB.Domain.dll
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\bin\Debug\net7.0\EDB.Domain.pdb
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\EDB.Domain.dll
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\refint\EDB.Domain.dll
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\EDB.Domain.pdb
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\ref\EDB.Domain.dll
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\bin\Debug\net7.0\EDB.Domain.runtimeconfig.json
+C:\Users\azatc\source\repos\EDB\src\EDB.Domain\obj\Debug\net7.0\EDB.Domain.genruntimeconfig.cache
