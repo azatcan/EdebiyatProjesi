@@ -1,3 +1,5 @@
+using EDB.BackofficeUI.Handlers;
+
 namespace EDB.BackofficeUI
 {
     public class Program
@@ -8,6 +10,10 @@ namespace EDB.BackofficeUI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddHttpClient();
+            builder.Services.AddScoped<DefaultClient>();
+            builder.Services.AddHttpContextAccessor();
+
 
             var app = builder.Build();
 
@@ -25,8 +31,12 @@ namespace EDB.BackofficeUI
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.MapControllerRoute(
+            
+                app.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            
+                app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
