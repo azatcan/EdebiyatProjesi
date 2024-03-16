@@ -30,9 +30,9 @@ namespace EDB.WebAPI.Controllers
 
             if (result.Succeeded)
             {
-                return Ok("Login successful.");
+                return new JsonResult(new { Message = "Login successful." }) { StatusCode = 200 };
             }
-            return Unauthorized();
+            return new JsonResult(new { Message = "Unauthorized access." }) { StatusCode = 401 };
         }
        
         [HttpPost]
