@@ -54,18 +54,26 @@
   "MultiProjectConfigurations": {
     "API + UI": {
       "Projects": {
-        "EDB.WebAPI": {},
-        "EDB.BackofficeUI": {}
+        "EDB.WebAPI": {
+          "ProfileName": "http"
+        },
+        "EDB.BackofficeUI": {
+          "ProfileName": "http"
+        }
       }
     },
     "API": {
       "Projects": {
-        "EDB.WebAPI": {}
+        "EDB.WebAPI": {
+          "ProfileName": "http"
+        }
       }
     },
     "UI": {
       "Projects": {
-        "EDB.BackofficeUI": {}
+        "EDB.BackofficeUI": {
+          "ProfileName": "http"
+        }
       }
     }
   }
