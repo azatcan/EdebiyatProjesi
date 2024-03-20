@@ -12,6 +12,7 @@ namespace EDB.BackofficeUI
             builder.Services.AddControllersWithViews();
             builder.Services.AddHttpClient();
             builder.Services.AddScoped<DefaultClient>();
+            builder.Services.AddSession();
             builder.Services.AddHttpContextAccessor();
 
 
@@ -29,6 +30,7 @@ namespace EDB.BackofficeUI
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
             

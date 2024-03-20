@@ -1,4 +1,5 @@
-﻿using EDB.BackofficeUI.Handlers;
+﻿using Azure.Core;
+using EDB.BackofficeUI.Handlers;
 using EDB.BackofficeUI.Models;
 using EDB.BackofficeUI.Utils;
 using EDB.WebAPI.Model.AccountModel;
@@ -24,22 +25,42 @@ namespace EDB.BackofficeUI.Controllers
         [HttpPost]
         public async Task<IActionResult> login(LoginModel model)
         {
-           
-
-            var response = await client.PostAsync<LoginModel,LoginResponse>(DefaultClientEndpoint.Authentice.Login, model);
-            if (response.Success)
+            if (ModelState.IsValid)
             {
-                
-                return RedirectToAction("Index", "Home");
+                var response = await client.PostAsync<LoginModel, LoginResponse>(DefaultClientEndpoint.Authentice.Login, model);
+                if (response.Success)
+                {
+                    HttpContext.Session.SetString("UserName", model.UserName);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("login", "Account");
+                }
             }
-            else
-            {
-                return RedirectToAction("login", "Account");
-            }
-
             return View(model);
         }
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View(new RegisterModel());
+        }
+
         [HttpPost]
+        public async Task<IActionResult> Register(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await client.PostAsync<RegisterModel>(DefaultClientEndpoint.Authentice.Register, model);
+                if (response.Success)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                
+            }
+            return View(model);
+        }
+  
         public async Task<ActionResult> LogOut()
         {
             using (var client = new HttpClient())
@@ -50,6 +71,7 @@ namespace EDB.BackofficeUI.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
+                    HttpContext.Session.Clear();
                     return RedirectToAction("Index", "Home"); 
                 }
                 else

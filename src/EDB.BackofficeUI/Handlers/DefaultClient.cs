@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EDB.WebAPI.Model.AccountModel;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -43,18 +44,55 @@ namespace EDB.BackofficeUI.Handlers
             return result;
         }
 
-        public async Task<dynamic> PostAsync<TRequest>(string endpoint, TRequest requsetData)
+        //public async Task<dynamic> PostAsync<TRequest>(string endpoint, TRequest requsetData)
+        //{
+        //    var json = JsonConvert.SerializeObject(requsetData);
+        //    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        //    var response = await _httpClient.PostAsync(endpoint, content);
+        //    response.EnsureSuccessStatusCode();
+
+        //    var responseJson = await response.Content.ReadAsStringAsync();
+        //    var result = JsonConvert.DeserializeObject<dynamic>(responseJson);
+
+        //    return result;
+        //}
+
+        public async Task<dynamic> PostAsync<TRequest>(string endpoint, TRequest requestData) 
         {
-            var json = JsonConvert.SerializeObject(requsetData);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync(endpoint, content);
-            response.EnsureSuccessStatusCode();
+            var formData = new MultipartFormDataContent();
+            var model = requestData as RegisterModel;
+            if (model != null)
+            {
+                // Metin alanlarını ekleyin
+                formData.Add(new StringContent(model.Name), "Name");
+                formData.Add(new StringContent(model.SurName), "SurName");
+                formData.Add(new StringContent(model.Email), "Email");
+                formData.Add(new StringContent(model.UserName), "UserName");
+                formData.Add(new StringContent(model.AudioFilePath), "AudioFilePath");
+                formData.Add(new StringContent(model.Password), "Password");
+                formData.Add(new StringContent(model.RePassword), "RePassword");
 
-            var responseJson = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<dynamic>(responseJson);
+                // Dosya eklemek için
+                if (model.ImagePath != null)
+                {
+                    var imageStream = model.ImagePath.OpenReadStream();
+                    var fileName = Path.GetFileName(model.ImagePath.FileName);
+                    formData.Add(new StreamContent(imageStream), "ImagePath", fileName);
+                }
+                var json = JsonConvert.SerializeObject(formData);
+                var content = new StringContent(json, Encoding.UTF8, "multipart/form-data");
 
-            return result;
+                var response = await _httpClient.PostAsync(endpoint, formData);
+                response.EnsureSuccessStatusCode();
+
+                var responseJson = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<dynamic>(responseJson);
+                return result;
+            }
+            return null;
         }
     }
+    
 }

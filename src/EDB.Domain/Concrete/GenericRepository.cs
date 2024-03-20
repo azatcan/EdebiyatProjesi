@@ -1,9 +1,6 @@
 ﻿using EDB.Domain.Abstract;
 using EDB.Domain.Data;
-using System.Data.Entity;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-
 
 namespace EDB.Domain.Concrete
 {

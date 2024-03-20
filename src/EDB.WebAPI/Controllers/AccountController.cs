@@ -13,14 +13,14 @@ namespace EDB.WebAPI.Controllers
     {
         private readonly Microsoft.AspNetCore.Identity.UserManager<Users> _userManager;
         private readonly SignInManager<Users> _signInManager;
+        public readonly IWebHostEnvironment _webHost;
 
-        public AccountController(Microsoft.AspNetCore.Identity.UserManager<Users> userManager, SignInManager<Users> signInManager)
+        public AccountController(Microsoft.AspNetCore.Identity.UserManager<Users> userManager, SignInManager<Users> signInManager, IWebHostEnvironment webHost)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _webHost = webHost;
         }
-
-     
 
         [HttpPost]
         [Route("login")]
@@ -37,41 +37,43 @@ namespace EDB.WebAPI.Controllers
        
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register([FromForm]RegisterModel model)
         {
             if (ModelState.IsValid)
             {
                 Users user = new Users();
-                if (model.ImagePath != null) 
+                if (model.ImagePath != null)
                 {
                     var extension = Path.GetExtension(model.ImagePath.FileName);
                     var newimagename = Guid.NewGuid() + extension;
-                    var location = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/resimler",newimagename);
-                    var stream = new FileStream(location,FileMode.Create);
-                    model.ImagePath.CopyTo(stream);
+                    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/resimler", newimagename);
+                    using (var stream = new FileStream(location, FileMode.Create))
+                    {
+                        await model.ImagePath.CopyToAsync(stream);
+                    }
                     user.ImagePath = newimagename;
                 }
-                //Users users = new Users
-                //{
+
                 user.Name = model.Name;
                 user.SurName = model.SurName;
                 user.UserName = model.UserName;
                 user.Email = model.Email;
                 user.AudioFilePath = model.AudioFilePath;
-                //};
+
                 if (model.Password == model.RePassword)
                 {
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return Ok("Registration successful.");
+                        
+                        return NoContent();
                     }
 
                     return BadRequest(result.Errors);
                 }
             }
-            return Ok();
+
+            return NoContent();
         }
         [HttpPost]
         [Route("logout")]
