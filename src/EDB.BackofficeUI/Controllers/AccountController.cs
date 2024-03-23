@@ -51,12 +51,18 @@ namespace EDB.BackofficeUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await client.PostAsync<RegisterModel>(DefaultClientEndpoint.Authentice.Register, model);
-                if (response.Success)
+                
+                var response = await client.PostAsync(DefaultClientEndpoint.Authentice.Register, model);
+                if (response != null && response.Success == true)
                 {
+                    
+                }
+                else
+                {
+                    HttpContext.Session.SetString("UserName", model.UserName);
                     return RedirectToAction("Index", "Home");
                 }
-                
+
             }
             return View(model);
         }

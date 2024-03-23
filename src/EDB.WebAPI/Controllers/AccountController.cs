@@ -65,7 +65,7 @@ namespace EDB.WebAPI.Controllers
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        
+                        await _signInManager.SignInAsync(user, isPersistent: false);
                         return NoContent();
                     }
 

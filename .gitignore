@@ -400,3 +400,4 @@ FodyWeavers.xsd
 
 #Custom
 **/appsettings.*
+/.vs/EDB/v17/fileList.bin

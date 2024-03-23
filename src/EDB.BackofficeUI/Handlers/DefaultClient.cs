@@ -58,7 +58,7 @@ namespace EDB.BackofficeUI.Handlers
         //    return result;
         //}
 
-        public async Task<dynamic> PostAsync<TRequest>(string endpoint, TRequest requestData) 
+        public async Task<RegisterResponse> PostAsync<TRequest>(string endpoint, TRequest requestData) 
         {
 
             var formData = new MultipartFormDataContent();
@@ -73,6 +73,7 @@ namespace EDB.BackofficeUI.Handlers
                 formData.Add(new StringContent(model.AudioFilePath), "AudioFilePath");
                 formData.Add(new StringContent(model.Password), "Password");
                 formData.Add(new StringContent(model.RePassword), "RePassword");
+                
 
                 // Dosya eklemek için
                 if (model.ImagePath != null)
@@ -88,7 +89,7 @@ namespace EDB.BackofficeUI.Handlers
                 response.EnsureSuccessStatusCode();
 
                 var responseJson = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<dynamic>(responseJson);
+                var result = JsonConvert.DeserializeObject<RegisterResponse>(responseJson);
                 return result;
             }
             return null;

@@ -9,5 +9,10 @@
             public const string Register = "/api/Account/register";
             public const string Logout = "/api/Account/logout";
         }
+
+        public struct Category
+        {
+            public const string List = "/api/Category/categorylist";
+        }
     }
 }
