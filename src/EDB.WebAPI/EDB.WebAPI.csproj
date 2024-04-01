@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\resimler\" />
+    <Folder Include="wwwroot\resimler\user\" />
   </ItemGroup>
 
 </Project>

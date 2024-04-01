@@ -1,4 +1,5 @@
 using EDB.BackofficeUI.Handlers;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace EDB.BackofficeUI
 {
@@ -14,6 +15,14 @@ namespace EDB.BackofficeUI
             builder.Services.AddScoped<DefaultClient>();
             builder.Services.AddSession();
             builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie();
+            builder.Services.AddAuthorization();
 
 
             var app = builder.Build();
@@ -31,7 +40,7 @@ namespace EDB.BackofficeUI
 
             app.UseRouting();
             app.UseSession();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             
                 app.MapControllerRoute(

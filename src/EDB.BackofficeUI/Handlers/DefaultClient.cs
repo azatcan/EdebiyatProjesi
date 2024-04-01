@@ -73,7 +73,6 @@ namespace EDB.BackofficeUI.Handlers
                 formData.Add(new StringContent(model.AudioFilePath), "AudioFilePath");
                 formData.Add(new StringContent(model.Password), "Password");
                 formData.Add(new StringContent(model.RePassword), "RePassword");
-                
 
                 // Dosya eklemek için
                 if (model.ImagePath != null)

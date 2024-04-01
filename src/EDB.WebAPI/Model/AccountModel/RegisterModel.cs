@@ -1,4 +1,6 @@
-﻿namespace EDB.WebAPI.Model.AccountModel
+﻿using EDB.Domain.Entities;
+
+namespace EDB.WebAPI.Model.AccountModel
 {
     public class RegisterModel
     {
@@ -10,6 +12,5 @@
         public string RePassword { get; set; }
         public IFormFile ImagePath { get; set; }
         public string? AudioFilePath { get; set; }
-
     }
 }

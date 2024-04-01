@@ -8,6 +8,7 @@
 
             public const string Register = "/api/Account/register";
             public const string Logout = "/api/Account/logout";
+            public const string GetUserRoles = "/api/Account/getUserRoles";
         }
 
         public struct Category

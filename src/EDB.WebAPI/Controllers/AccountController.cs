@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace EDB.WebAPI.Controllers
 {
@@ -12,12 +13,14 @@ namespace EDB.WebAPI.Controllers
     public class AccountController : ControllerBase
     {
         private readonly Microsoft.AspNetCore.Identity.UserManager<Users> _userManager;
+        private readonly Microsoft.AspNetCore.Identity.RoleManager<Roles> _roleManager;
         private readonly SignInManager<Users> _signInManager;
         public readonly IWebHostEnvironment _webHost;
 
-        public AccountController(Microsoft.AspNetCore.Identity.UserManager<Users> userManager, SignInManager<Users> signInManager, IWebHostEnvironment webHost)
+        public AccountController(Microsoft.AspNetCore.Identity.UserManager<Users> userManager, Microsoft.AspNetCore.Identity.RoleManager<Roles> roleManager, SignInManager<Users> signInManager, IWebHostEnvironment webHost)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _webHost = webHost;
         }
@@ -27,17 +30,17 @@ namespace EDB.WebAPI.Controllers
         public async Task<IActionResult> Login(LoginModel model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
-
+         
             if (result.Succeeded)
             {
                 return new JsonResult(new { Message = "Login successful." }) { StatusCode = 200 };
             }
             return new JsonResult(new { Message = "Unauthorized access." }) { StatusCode = 401 };
         }
-       
+
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromForm]RegisterModel model)
+        public async Task<IActionResult> Register([FromForm] RegisterModel model)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +49,7 @@ namespace EDB.WebAPI.Controllers
                 {
                     var extension = Path.GetExtension(model.ImagePath.FileName);
                     var newimagename = Guid.NewGuid() + extension;
-                    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/resimler", newimagename);
+                    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/resimler/user", newimagename);
                     using (var stream = new FileStream(location, FileMode.Create))
                     {
                         await model.ImagePath.CopyToAsync(stream);
@@ -63,6 +66,7 @@ namespace EDB.WebAPI.Controllers
                 if (model.Password == model.RePassword)
                 {
                     var result = await _userManager.CreateAsync(user, model.Password);
+                    await _userManager.AddToRoleAsync(user, "User");
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
@@ -81,6 +85,16 @@ namespace EDB.WebAPI.Controllers
         {
             await _signInManager.SignOutAsync();
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("getUserRoles")]
+        public async Task<IActionResult> GetUserRoles()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var userRoles = await _userManager.GetRolesAsync(currentUser);
+            var rolesString = string.Join(",", userRoles);
+            return Ok(rolesString);
         }
     }
 }

@@ -4,6 +4,7 @@ using EDB.Domain.Data;
 using EDB.Domain.Entities;
 using EDB.Infrastructure.Abstract;
 using EDB.Infrastructure.Concrete;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -62,6 +63,13 @@ namespace EDB.WebAPI
         }
         private static void ConfigureAuth(WebApplicationBuilder builder)
         {
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie();
+
             builder.Services.AddIdentity<Users, Roles>(options =>
             {
                 options.Password.RequireDigit = false;

@@ -2,6 +2,7 @@
 using EDB.BackofficeUI.Handlers;
 using EDB.BackofficeUI.Models;
 using EDB.BackofficeUI.Utils;
+using EDB.Domain.Entities;
 using EDB.WebAPI.Model.AccountModel;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
@@ -30,6 +31,10 @@ namespace EDB.BackofficeUI.Controllers
                 var response = await client.PostAsync<LoginModel, LoginResponse>(DefaultClientEndpoint.Authentice.Login, model);
                 if (response.Success)
                 {
+                    var userRoles = await client.GetAsync<string>(DefaultClientEndpoint.Authentice.GetUserRoles);
+
+                    HttpContext.Session.SetString("UserRoles", userRoles);
+
                     HttpContext.Session.SetString("UserName", model.UserName);
                     return RedirectToAction("Index", "Home");
                 }
@@ -58,7 +63,7 @@ namespace EDB.BackofficeUI.Controllers
                     
                 }
                 else
-                {
+                {      
                     HttpContext.Session.SetString("UserName", model.UserName);
                     return RedirectToAction("Index", "Home");
                 }

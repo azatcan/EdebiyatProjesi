@@ -3,6 +3,7 @@
     public class LoginResponse
     {
         public bool Success { get; set; } = true;
-        public string Message { get; set; }
+        public string UserRoles { get; set; }
+
     }
 }
