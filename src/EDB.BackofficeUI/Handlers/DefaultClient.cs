@@ -1,4 +1,5 @@
 ﻿using EDB.WebAPI.Model.AccountModel;
+using EDB.WebAPI.Model.AuthorsModel;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -65,7 +66,6 @@ namespace EDB.BackofficeUI.Handlers
             var model = requestData as RegisterModel;
             if (model != null)
             {
-                // Metin alanlarını ekleyin
                 formData.Add(new StringContent(model.Name), "Name");
                 formData.Add(new StringContent(model.SurName), "SurName");
                 formData.Add(new StringContent(model.Email), "Email");
@@ -74,7 +74,6 @@ namespace EDB.BackofficeUI.Handlers
                 formData.Add(new StringContent(model.Password), "Password");
                 formData.Add(new StringContent(model.RePassword), "RePassword");
 
-                // Dosya eklemek için
                 if (model.ImagePath != null)
                 {
                     var imageStream = model.ImagePath.OpenReadStream();
@@ -89,6 +88,39 @@ namespace EDB.BackofficeUI.Handlers
 
                 var responseJson = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<RegisterResponse>(responseJson);
+                return result;
+            }
+            return null;
+        }
+
+        public async Task<AuthorsResponse> PostAuthorsAsync<TRequest>(string endpoint, TRequest requestData)
+        {
+
+            var formData = new MultipartFormDataContent();
+            var model = requestData as AuthorsAddedModel;
+            if (model != null)
+            {
+                formData.Add(new StringContent(model.Name), "Name");
+                formData.Add(new StringContent(model.SurName), "SurName");
+                formData.Add(new StringContent(model.About), "About");
+                formData.Add(new StringContent(model.Pseudonym), "Pseudonym");
+                formData.Add(new StringContent(model.DateOfBirth.ToString("yyyy-MM-dd")), "DateOfBirth");
+                formData.Add(new StringContent(model.DateOfDeath.ToString("yyyy-MM-dd")), "DateOfDeath");
+
+                if (model.ImagePath != null)
+                {
+                    var imageStream = model.ImagePath.OpenReadStream();
+                    var fileName = Path.GetFileName(model.ImagePath.FileName);
+                    formData.Add(new StreamContent(imageStream), "ImagePath", fileName);
+                }
+                var json = JsonConvert.SerializeObject(formData);
+                var content = new StringContent(json, Encoding.UTF8, "multipart/form-data");
+
+                var response = await _httpClient.PostAsync(endpoint, formData);
+                response.EnsureSuccessStatusCode();
+
+                var responseJson = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<AuthorsResponse>(responseJson);
                 return result;
             }
             return null;

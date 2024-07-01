@@ -13,7 +13,15 @@
 
         public struct Category
         {
-            public const string List = "/api/Category/categorylist";
+            public const string List = "/api/Category/List";
+            public const string Delete = "/api/Category/Delete";
+            public const string Add = "/api/Category/Add";
+        }
+
+        public struct Authors
+        {
+            public const string List = "/api/Authors/List";
+            public const string Add = "/api/Authors/Add";
         }
     }
 }

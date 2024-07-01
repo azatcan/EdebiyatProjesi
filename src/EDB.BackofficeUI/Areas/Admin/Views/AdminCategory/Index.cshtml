@@ -1,0 +1,52 @@
+﻿@model List<EDB.Domain.Entities.Category>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<a class="btn btn-primary" href="/Admin/AdminCategory/Add">Kategori Ekle</a>
+<br />
+<br />
+<table class="table table-bordered" id="table">
+    <tr>
+        <th>Ad</th>
+        <th>Açıklama</th>
+        <th>Sil</th>
+        <th>Güncelleme</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@Html.ActionLink("Sil","Delete",new {item.Id},new {@class="btn btn-danger",onclick="return confirm ('silmek istiyormsunuz?')"})</td>
+            <td><a class="btn btn-primary" href="/Admin/AdminCategory/Update/@item.Id">Güncelleme</a></td>
+        </tr>
+    }
+</table>
+
+
+    <script>
+        function deleteCategory(id) {
+            if (confirm('Silmek istiyor musunuz?')) {
+                fetch('/api/Category/Delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: id })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert('Silme işlemi başarısız.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+    </script>
+
+

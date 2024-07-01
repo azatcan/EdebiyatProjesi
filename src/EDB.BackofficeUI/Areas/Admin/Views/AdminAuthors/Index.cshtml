@@ -1,16 +1,22 @@
-﻿@model List<EDB.Domain.Entities.Category>
+﻿@model List<EDB.Domain.Entities.Authors>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
-<a class="btn btn-primary" href="/Admin/AdminCategory/Create">Kategori Ekle</a>
+
+<a class="btn btn-primary" href="/Admin/AdminAuthors/Add">Kategori Ekle</a>
 <br />
 <br />
 <table class="table table-bordered" id="table">
     <tr>
         <th>Ad</th>
-        <th>Açıklama</th>
+        <th>Soyad</th>
+        <th>Hakkında</th>
+        <th>Mahlası</th>
+        <th>Resim</th>
+        <th>DateOfBirth</th>
+        <th>DateOfDeath</th>
         <th>Sil</th>
         <th>Güncelleme</th>
     </tr>
@@ -18,16 +24,14 @@
     {
         <tr>
             <td>@item.Name</td>
+            <td>@item.SurName</td>
+            <td>@item.About</td>
+            <td>@item.Pseudonym</td>
+            <td>@item.ImagePath</td>
+            <td>@item.DateOfBirth</td>
+            <td>@item.DateOfDeath</td>
             <td>@Html.ActionLink("Sil","Delete",new {item.Id},new {@class="btn btn-danger",onclick="return confirm ('silmek istiyormsunuz?')"})</td>
             <td><a class="btn btn-primary" href="/Admin/AdminCategory/Update/@item.Id">Güncelleme</a></td>
         </tr>
     }
 </table>
-
-
-
-
-
-
-
-

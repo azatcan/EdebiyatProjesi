@@ -23,14 +23,14 @@ namespace EDB.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("list")]
+        [Route("List")]
         public IActionResult GetAuthors()
         {
             var result = authorsService.List();
             return Ok(result);
         }
         [HttpPost]
-        [Route("add")]
+        [Route("Add")]
         public async Task<IActionResult> AuthorsAdded([FromForm] AuthorsAddedModel model)
         {
             if (ModelState.IsValid)
